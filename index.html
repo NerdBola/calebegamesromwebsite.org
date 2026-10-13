@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1e8" />
+    <meta name="description" content="Conheça CalebeGamesRom: criador de conteúdo, speedrunner e moderador no Speedrun.com." />
+    <title>CalebeGamesRom | Games, speedruns e comunidade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="#inicio" aria-label="CalebeGamesRom, início">
+        <span class="wordmark-mark">CG<span>R</span></span>
+        <span class="wordmark-name">CALEBE<br />GAMES ROM</span>
+      </a>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#sobre">Sobre</a>
+        <a href="#jogos">Jogos que modero</a>
+        <a href="#canais">Me encontre</a>
+      </nav>
+      <a class="header-src" href="https://www.speedrun.com/users/CalebeGamesRom_SN" target="_blank" rel="noreferrer">
+        PERFIL SRC <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-image" role="img" aria-label="Setup de jogos com computador e iluminação colorida"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow"><span class="live-dot"></span> PLAYER, CRIADOR & MODERADOR</p>
+          <h1 id="hero-title">Oi, eu sou<br />o <span>Calebe.</span></h1>
+          <p class="hero-copy">Entre games, speedruns e novas ideias. Esse é o meu canto da internet.</p>
+          <a class="button button-dark" href="#sobre">CONHEÇA MINHA HISTÓRIA <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-stamp" aria-label="Desde 2024, no ritmo do speedrun">
+          <span>DESDE</span><strong>’24</strong><span>NO RITMO<br />DO SPEEDRUN</span>
+        </div>
+        <div class="hero-caption"><span>01 / PERFIL</span><span>BRASIL · ONLINE</span></div>
+      </section>
+
+      <section class="intro section-wrap" id="sobre" aria-labelledby="about-title">
+        <div class="section-index"><span>01</span><span>QUEM SOU EU</span></div>
+        <div class="intro-copy">
+          <h2 id="about-title">Jogar é o começo.<br /><span>O resto é descobrir.</span></h2>
+          <p>Oi! Sou o Calebe, faço conteúdo infantojuvenil (+13) e adoro videogames. Também faço speedruns e ajudo comunidades como moderador no Speedrun.com.</p>
+          <p>Sou autista, falo inglês e estou pensando em criar uma categoria de speedrun para mods de <em>Counter-Strike 2</em>. Ideia em construção, qualquer segundo pode virar recorde.</p>
+          <div class="about-note"><span class="note-icon" aria-hidden="true">✳</span><span>Quando criei este site, eu tinha 14 anos.</span></div>
+        </div>
+        <div class="intro-side" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <span class="side-code">RUN<br />IT<br />BACK<span>↗</span></span>
+          <span class="side-label">FOCO: PRÓXIMO PB</span>
+        </div>
+      </section>
+
+      <section class="games-section" id="jogos" aria-labelledby="games-title">
+        <div class="section-wrap">
+          <div class="section-index section-index-light"><span>02</span><span>MINHA ÁREA DE MODERAÇÃO</span></div>
+          <div class="games-heading">
+            <div>
+              <p class="eyebrow eyebrow-light">DADOS DIRETO DO SPEEDRUN.COM</p>
+              <h2 id="games-title">Jogos que<br /><span>eu modero.</span></h2>
+            </div>
+            <p class="games-description">Uma lista atualizada pela API oficial do Speedrun.com. Explore os jogos e abra qualquer página para ver as categorias e as regras.</p>
+          </div>
+
+          <div class="games-toolbar">
+            <label class="search-box" for="game-search">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+              <input id="game-search" type="search" placeholder="Buscar jogo..." autocomplete="off" />
+            </label>
+            <div class="filter-group" role="group" aria-label="Filtrar jogos">
+              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Todos</button>
+              <button class="filter-button" type="button" data-filter="romhack" aria-pressed="false">ROM hacks</button>
+            </div>
+            <p class="game-count" id="game-count" aria-live="polite">Buscando jogos<span class="loading-dots">...</span></p>
+          </div>
+
+          <div class="games-grid" id="games-grid" aria-live="polite" aria-busy="true">
+            <div class="games-message">Conectando ao Speedrun.com<span class="loading-dots">...</span></div>
+          </div>
+          <div class="games-footer">
+            <p id="games-status">A lista é carregada ao vivo. Os dados e as imagens dos jogos pertencem ao Speedrun.com.</p>
+            <a href="https://www.speedrun.com/users/CalebeGamesRom_SN" target="_blank" rel="noreferrer">VER MEU PERFIL COMPLETO <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="channels-section section-wrap" id="canais" aria-labelledby="channels-title">
+        <div class="section-index"><span>03</span><span>VAMOS NOS CONECTAR</span></div>
+        <div class="channels-heading">
+          <h2 id="channels-title">A próxima run<br />pode ser <span>juntos.</span></h2>
+          <p>Vídeos, lives e tentativas de recorde. Aparece por lá!</p>
+        </div>
+        <div class="channel-links">
+          <a class="channel-link youtube-link" href="https://www.youtube.com/@CalebeGoncalvesRom" target="_blank" rel="noreferrer">
+            <span class="channel-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 8.1a2.9 2.9 0 0 0-2-2C18.2 5.6 12 5.6 12 5.6s-6.2 0-8 .5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 1.5 12 30 30 0 0 0 2 15.9a2.9 2.9 0 0 0 2 2c1.8.5 8 .5 8 .5s6.2 0 8-.5a2.9 2.9 0 0 0 2-2 30 30 0 0 0 .5-3.9 30 30 0 0 0-.5-3.9Z"></path><path class="play-mark" d="m10 15.5 5-3.5-5-3.5z"></path></svg></span>
+            <span class="channel-copy"><small>VÍDEOS & MAIS</small><strong>YouTube</strong></span>
+            <span class="channel-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="channel-link twitch-link" href="https://www.twitch.tv/theorignalcalebegamesrom" target="_blank" rel="noreferrer">
+            <span class="channel-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 3h18v12l-5 5h-4l-3 3H7v-3H3V6z"></path><path class="twitch-mark" d="M9 8v5m6-5v5"></path></svg></span>
+            <span class="channel-copy"><small>AO VIVO</small><strong>Twitch</strong></span>
+            <span class="channel-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="channel-link src-link" href="https://www.speedrun.com/users/CalebeGamesRom_SN" target="_blank" rel="noreferrer">
+            <span class="channel-icon src-icon" aria-hidden="true">SRC</span>
+            <span class="channel-copy"><small>RUNS & CATEGORIAS</small><strong>Speedrun.com</strong></span>
+            <span class="channel-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="#inicio">CALEBE<span>GAMES</span>ROM</a>
+      <p>FEITO COM GOSTO POR GAMES <span aria-hidden="true">✳</span></p>
+      <a href="#inicio">VOLTAR AO TOPO ↑</a>
+    </footer>
+  </body>
+</html>
