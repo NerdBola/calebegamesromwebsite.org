@@ -134,6 +134,60 @@ button, input { font: inherit; }
 .site-footer p span { color: var(--coral); margin-left: 6px; }
 .site-footer > a:last-child { color: #d6d8cd; text-decoration: none; font-size: 8px; }
 
+.mical-section { padding: 92px 0 100px; background: #d9f0e8; position: relative; overflow: hidden; }
+.mical-section::before { content: ''; position: absolute; inset: 0 0 auto; height: 10px; background: repeating-linear-gradient(90deg, #ff765f 0 24px, #f5cf66 24px 48px, #59b7b0 48px 72px); }
+.mical-heading { margin: 48px 0 45px; display: flex; justify-content: space-between; align-items: end; gap: 45px; }
+.mical-heading h2 { margin: 0; font-size: 70px; line-height: .98; }
+.mical-heading h2 span { color: #358a80; }
+.mical-heading > p { width: min(340px, 38%); margin: 0 2vw 5px 0; color: #475c55; font-size: 14px; line-height: 1.7; }
+.mical-games-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.mical-game-card { min-width: 0; background: #fffdf5; border: 1px solid #203b32; box-shadow: 5px 5px 0 #203b32; }
+.mical-art { height: 190px; position: relative; overflow: hidden; isolation: isolate; }
+.resort-art { background: linear-gradient(180deg, #8bd5d2 0 47%, #42b9bd 47% 69%, #f3d58b 69%); }
+.art-sun { position: absolute; top: 24px; right: 62px; width: 56px; aspect-ratio: 1; border-radius: 50%; background: #ffbd57; box-shadow: 0 0 0 10px #ffbd5733; }
+.art-wave { position: absolute; left: -5%; width: 110%; height: 36px; border-top: 3px solid #e3ffffa6; border-radius: 50%; }
+.wave-one { top: 87px; transform: rotate(-2deg); }
+.wave-two { top: 111px; transform: rotate(2deg); }
+.art-palm { position: absolute; right: 12%; bottom: 33px; font-size: 56px; transform: rotate(-9deg); }
+.art-board { position: absolute; z-index: 1; left: 23%; bottom: 29px; font-size: 58px; transform: rotate(-9deg); }
+.arcade-art { display: grid; place-items: center; background: #f2cf69; }
+.arcade-art::before { content: ''; position: absolute; width: 230px; height: 230px; border: 1px solid #1d2926; border-radius: 50%; box-shadow: 0 0 0 23px #1d292611, 0 0 0 46px #1d29260b; }
+.art-arcade-title { position: relative; z-index: 1; color: #1d2926; font: 700 35px/.86 var(--display); text-align: center; transform: rotate(-5deg); }
+.art-pixel { position: absolute; width: 14px; height: 14px; background: #ed6c53; box-shadow: 16px 0 #ed6c53, 0 16px #ed6c53, 16px 16px #ed6c53; }
+.pixel-one { top: 37px; left: 17%; }
+.pixel-two { bottom: 48px; right: 22%; background: #348e84; box-shadow: 16px 0 #348e84, 0 16px #348e84, 16px 16px #348e84; }
+.pixel-three { top: 35px; right: 13%; width: 8px; height: 8px; background: #fffdf5; box-shadow: 14px 0 #fffdf5, 0 14px #fffdf5, 14px 14px #fffdf5; }
+.art-paddle { position: absolute; bottom: 0; left: 50%; width: 120px; height: 8px; background: #348e84; transform: translateX(-50%); }
+.mical-card-copy { padding: 22px 23px 24px; }
+.mical-card-kicker { margin: 0 0 10px; color: #55776d; font: 9px var(--mono); }
+.mical-card-copy h3 { margin: 0; font-size: 25px; line-height: 1.2; }
+.mical-card-copy > p:not(.mical-card-kicker) { min-height: 68px; margin: 11px 0 18px; color: #5b615a; font-size: 13px; line-height: 1.65; }
+.mical-card-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mical-play-button, .mical-secondary-button { min-height: 42px; padding: 0 12px; display: inline-flex; justify-content: center; align-items: center; gap: 10px; border: 1px solid #1d2926; cursor: pointer; font-size: 11px; transition: transform .16s, background .16s; }
+.mical-play-button { background: #c8ed69; color: #1d2926; font-weight: 700; }
+.mical-secondary-button { background: transparent; color: #1d2926; }
+.mical-play-button:hover, .mical-secondary-button:hover { transform: translateY(-2px); }
+.mical-play-button:hover { background: #b9e44d; }
+.mical-secondary-button:hover { background: #e5f0dd; }
+.mical-play-button:focus-visible, .mical-secondary-button:focus-visible, .dialog-close:focus-visible, .dialog-restart:focus-visible, .direction-controls button:focus-visible { outline: 3px solid #ed6c53; outline-offset: 3px; }
+.mical-dialog { width: min(900px, calc(100% - 28px)); max-width: none; max-height: calc(100% - 28px); padding: 0; overflow: auto; border: 1px solid #1d2926; background: #fffdf5; color: #1d2926; box-shadow: 8px 8px 0 #1d2926; }
+.mical-dialog::backdrop { background: #17221ed9; backdrop-filter: blur(3px); }
+.dialog-frame { padding: clamp(16px, 3vw, 28px); }
+.dialog-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.dialog-header .mical-card-kicker { margin-bottom: 5px; }
+.dialog-header h2 { margin: 0; font-size: clamp(23px, 4vw, 34px); line-height: 1.1; }
+.dialog-close { width: 38px; height: 38px; flex: 0 0 auto; border: 1px solid #1d2926; background: transparent; color: #1d2926; cursor: pointer; font-size: 16px; }
+.dialog-instructions { min-height: 21px; margin: 13px 0 5px; color: #4d5b53; font-size: 12px; }
+.mini-game-status { min-height: 20px; margin: 5px 0 9px; color: #2e7f73; font: 11px var(--mono); }
+.mini-game-canvas { display: block; width: 100%; aspect-ratio: 800 / 440; background: #d9f0e8; border: 1px solid #1d2926; touch-action: manipulation; }
+.dialog-controls { min-height: 54px; padding-top: 12px; display: flex; align-items: center; gap: 12px; }
+.direction-controls { display: grid; grid-template-columns: repeat(4, 40px); gap: 4px; }
+.direction-controls button { width: 40px; height: 38px; border: 1px solid #1d2926; background: #e8f1e6; color: #1d2926; cursor: pointer; font-size: 16px; touch-action: none; }
+.direction-controls button:active { background: #c8ed69; }
+.dialog-restart { min-height: 38px; padding: 0 12px; border: 1px solid #1d2926; background: #1d2926; color: #fffdf5; cursor: pointer; font-size: 11px; }
+.dialog-key-hint { margin-left: auto; color: #767d72; font: 8px var(--mono); text-align: right; }
+.mini-game-canvas:focus-visible { outline: 3px solid #ed6c53; outline-offset: 2px; }
+
 @keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes image-arrive { from { opacity: .65; transform: scale(1.07); } to { opacity: 1; transform: scale(1.025); } }
 @keyframes blink { 50% { opacity: .28; } }
@@ -149,6 +203,8 @@ button, input { font: inherit; }
   .intro { grid-template-columns: .7fr 2fr; }
   .intro-side { display: none; }
   .games-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mical-heading h2 { font-size: 58px; }
+  .mical-card-copy { padding: 19px; }
   .channels-section { grid-template-columns: .7fr 2fr; }
   .channel-links { grid-template-columns: 1fr; }
   .channel-link { min-height: 82px; }
@@ -189,6 +245,21 @@ button, input { font: inherit; }
   .game-name { font-size: 11px; }
   .game-meta { font-size: 7px; }
   .games-footer { align-items: flex-start; flex-direction: column; line-height: 1.6; }
+  .mical-section { padding: 68px 0 73px; }
+  .mical-heading { margin: 42px 0 30px; display: block; }
+  .mical-heading h2 { font-size: 46px; }
+  .mical-heading > p { width: auto; margin: 18px 0 0; font-size: 13px; }
+  .mical-games-grid { grid-template-columns: 1fr; gap: 20px; }
+  .mical-art { height: 155px; }
+  .mical-card-copy { padding: 18px; }
+  .mical-card-copy h3 { font-size: 21px; }
+  .mical-card-copy > p:not(.mical-card-kicker) { min-height: 0; }
+  .mical-play-button, .mical-secondary-button { flex: 1 1 auto; }
+  .dialog-controls { flex-wrap: wrap; gap: 8px; }
+  .direction-controls { grid-template-columns: repeat(4, 36px); }
+  .direction-controls button { width: 36px; height: 36px; }
+  .dialog-key-hint { display: none; }
+  .dialog-instructions { font-size: 11px; }
   .channels-section { padding: 68px 0 73px; display: block; }
   .channels-section > .section-index { margin-bottom: 43px; }
   .channels-heading { display: block; }

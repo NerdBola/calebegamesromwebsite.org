@@ -21,6 +21,7 @@
       <nav class="main-nav" aria-label="Navegação principal">
         <a href="#sobre">Sobre</a>
         <a href="#jogos">Jogos que modero</a>
+        <a href="#mical-games">Praça de Diversão</a>
         <a href="#canais">Me encontre</a>
       </nav>
       <a class="header-src" href="https://www.speedrun.com/users/CalebeGamesRom_SN" target="_blank" rel="noreferrer">
@@ -92,8 +93,49 @@
         </div>
       </section>
 
+      <section class="mical-section" id="mical-games" aria-labelledby="mical-title">
+        <div class="section-wrap">
+          <div class="section-index"><span>03</span><span>PRAÇA DE DIVERSÃO</span></div>
+          <div class="mical-heading">
+            <div>
+              <p class="eyebrow"><span class="live-dot"></span> DOIS JOGOS, QUATRO DESAFIOS</p>
+              <h2 id="mical-title">A diversão<br /><span>começa aqui.</span></h2>
+            </div>
+            <p>Um verão no resort com Paulo e uma disputa arcade para ver quem leva a melhor. Escolha seu jogo e bora jogar!</p>
+          </div>
+
+          <div class="mical-games-grid">
+            <article class="mical-game-card resort-card">
+              <div class="mical-art resort-art" aria-hidden="true"><span class="art-sun"></span><span class="art-wave wave-one"></span><span class="art-wave wave-two"></span><span class="art-palm">🌴</span><span class="art-board">🏄</span></div>
+              <div class="mical-card-copy">
+                <p class="mical-card-kicker">AVENTURA DE VERÃO · 2 MINIGAMES</p>
+                <h3>MIcal: Lets Go To Resort</h3>
+                <p>Férias na praia com Paulo: pegue a prancha, atravesse a areia e volte antes dele. Depois, relaxe com uma pescaria!</p>
+                <div class="mical-card-actions">
+                  <button class="mical-play-button" type="button" data-launch-game="race">🏄 Corrida na prancha <span aria-hidden="true">→</span></button>
+                  <button class="mical-secondary-button" type="button" data-launch-game="fishing">🎣 Pescaria</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="mical-game-card arcade-card">
+              <div class="mical-art arcade-art" aria-hidden="true"><span class="art-pixel pixel-one"></span><span class="art-pixel pixel-two"></span><span class="art-pixel pixel-three"></span><span class="art-arcade-title">MICAL<br />ARCADE</span><span class="art-paddle"></span></div>
+              <div class="mical-card-copy">
+                <p class="mical-card-kicker">ARCADE · 2 MINIGAMES</p>
+                <h3>MIcal Arcade Games</h3>
+                <p>Entre no labirinto do Pac-Mical ou enfrente Paulo num duelo de raquetes. Qual desafio vai primeiro?</p>
+                <div class="mical-card-actions">
+                  <button class="mical-play-button" type="button" data-launch-game="pac">🟡 Pac-Mical <span aria-hidden="true">→</span></button>
+                  <button class="mical-secondary-button" type="button" data-launch-game="duel">🏓 Mical vs Paulo</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="channels-section section-wrap" id="canais" aria-labelledby="channels-title">
-        <div class="section-index"><span>03</span><span>VAMOS NOS CONECTAR</span></div>
+        <div class="section-index"><span>04</span><span>VAMOS NOS CONECTAR</span></div>
         <div class="channels-heading">
           <h2 id="channels-title">A próxima run<br />pode ser <span>juntos.</span></h2>
           <p>Vídeos, lives e tentativas de recorde. Aparece por lá!</p>
@@ -117,6 +159,28 @@
         </div>
       </section>
     </main>
+
+    <dialog class="mical-dialog" id="mical-dialog" aria-labelledby="mini-game-title">
+      <div class="dialog-frame">
+        <header class="dialog-header">
+          <div><p class="mical-card-kicker">CALEBEGAMESROM ARCADE</p><h2 id="mini-game-title">Minigame</h2></div>
+          <button class="dialog-close" type="button" aria-label="Fechar jogo" title="Fechar jogo">✕</button>
+        </header>
+        <p class="dialog-instructions" id="mini-game-instructions"></p>
+        <p class="mini-game-status" id="mini-game-status" aria-live="polite"></p>
+        <canvas class="mini-game-canvas" id="mini-game-canvas" width="800" height="440" aria-label="Área do minigame"></canvas>
+        <div class="dialog-controls">
+          <div class="direction-controls" aria-label="Controles direcionais">
+            <button type="button" data-game-key="ArrowUp" aria-label="Para cima">↑</button>
+            <button type="button" data-game-key="ArrowLeft" aria-label="Para esquerda">←</button>
+            <button type="button" data-game-key="ArrowDown" aria-label="Para baixo">↓</button>
+            <button type="button" data-game-key="ArrowRight" aria-label="Para direita">→</button>
+          </div>
+          <button class="dialog-restart" type="button">↻ Reiniciar</button>
+          <span class="dialog-key-hint">TECLAS DE SETA · WASD · ESPAÇO</span>
+        </div>
+      </div>
+    </dialog>
 
     <footer class="site-footer">
       <a class="footer-brand" href="#inicio">CALEBE<span>GAMES</span>ROM</a>
