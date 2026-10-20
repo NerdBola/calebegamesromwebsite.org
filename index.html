@@ -20,7 +20,6 @@
       </a>
       <nav class="main-nav" aria-label="Navegação principal">
         <a href="#sobre">Sobre</a>
-        <a href="#jogos">Jogos que modero</a>
         <a href="#mical-games">Praça de Diversão</a>
         <a href="#canais">Me encontre</a>
       </nav>
@@ -60,48 +59,15 @@
         </div>
       </section>
 
-      <section class="games-section" id="jogos" aria-labelledby="games-title">
-        <div class="section-wrap">
-          <div class="section-index section-index-light"><span>02</span><span>MINHA ÁREA DE MODERAÇÃO</span></div>
-          <div class="games-heading">
-            <div>
-              <p class="eyebrow eyebrow-light">DADOS DIRETO DO SPEEDRUN.COM</p>
-              <h2 id="games-title">Jogos que<br /><span>eu modero.</span></h2>
-            </div>
-            <p class="games-description">Uma lista atualizada pela API oficial do Speedrun.com. Explore os jogos e abra qualquer página para ver as categorias e as regras.</p>
-          </div>
-
-          <div class="games-toolbar">
-            <label class="search-box" for="game-search">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
-              <input id="game-search" type="search" placeholder="Buscar jogo..." autocomplete="off" />
-            </label>
-            <div class="filter-group" role="group" aria-label="Filtrar jogos">
-              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Todos</button>
-              <button class="filter-button" type="button" data-filter="romhack" aria-pressed="false">ROM hacks</button>
-            </div>
-            <p class="game-count" id="game-count" aria-live="polite">Buscando jogos<span class="loading-dots">...</span></p>
-          </div>
-
-          <div class="games-grid" id="games-grid" aria-live="polite" aria-busy="true">
-            <div class="games-message">Conectando ao Speedrun.com<span class="loading-dots">...</span></div>
-          </div>
-          <div class="games-footer">
-            <p id="games-status">A lista é carregada ao vivo. Os dados e as imagens dos jogos pertencem ao Speedrun.com.</p>
-            <a href="https://www.speedrun.com/users/CalebeGamesRom_SN" target="_blank" rel="noreferrer">VER MEU PERFIL COMPLETO <span aria-hidden="true">↗</span></a>
-          </div>
-        </div>
-      </section>
-
       <section class="mical-section" id="mical-games" aria-labelledby="mical-title">
         <div class="section-wrap">
-          <div class="section-index"><span>03</span><span>PRAÇA DE DIVERSÃO</span></div>
+          <div class="section-index"><span>02</span><span>PRAÇA DE DIVERSÃO</span></div>
           <div class="mical-heading">
             <div>
-              <p class="eyebrow"><span class="live-dot"></span> DOIS JOGOS, QUATRO DESAFIOS</p>
+              <p class="eyebrow"><span class="live-dot"></span> TRÊS JOGOS, SEIS DESAFIOS</p>
               <h2 id="mical-title">A diversão<br /><span>começa aqui.</span></h2>
             </div>
-            <p>Um verão no resort com Paulo e uma disputa arcade para ver quem leva a melhor. Escolha seu jogo e bora jogar!</p>
+            <p>Corridas, arcade e aventura de verão. Escolha seu jogo e bora jogar!</p>
           </div>
 
           <div class="mical-games-grid">
@@ -130,12 +96,25 @@
                 </div>
               </div>
             </article>
+
+            <article class="mical-game-card formula-card">
+              <div class="mical-art formula-art" aria-hidden="true"><span class="formula-track"></span><span class="formula-sun"></span><span class="formula-car"><i></i><i></i></span><span class="formula-number">X</span></div>
+              <div class="mical-card-copy">
+                <p class="mical-card-kicker">CORRIDA · 2 MINIGAMES</p>
+                <h3>Formula 1 X</h3>
+                <p>Monte seu carro no box e leve sua configuração para o Grand Prix. Escolha entre 32 pistas e corra com seu carro ou com uma equipe.</p>
+                <div class="mical-card-actions">
+                  <button class="mical-play-button" type="button" data-launch-game="f1config">🔧 Config Car <span aria-hidden="true">→</span></button>
+                  <button class="mical-secondary-button" type="button" data-launch-game="f1gp">🏁 Grand Prix</button>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
 
       <section class="channels-section section-wrap" id="canais" aria-labelledby="channels-title">
-        <div class="section-index"><span>04</span><span>VAMOS NOS CONECTAR</span></div>
+        <div class="section-index"><span>03</span><span>VAMOS NOS CONECTAR</span></div>
         <div class="channels-heading">
           <h2 id="channels-title">A próxima run<br />pode ser <span>juntos.</span></h2>
           <p>Vídeos, lives e tentativas de recorde. Aparece por lá!</p>
@@ -168,6 +147,29 @@
         </header>
         <p class="dialog-instructions" id="mini-game-instructions"></p>
         <p class="mini-game-status" id="mini-game-status" aria-live="polite"></p>
+        <div class="f1-setup" id="f1-setup" hidden>
+          <section class="f1-config-panel" id="f1-config-panel" aria-label="Configuração do carro" hidden>
+            <p class="f1-panel-heading">VISUAL DO CARRO</p>
+            <div class="f1-colors" role="group" aria-label="Cor do carro">
+              <button type="button" data-f1-color="#e84b3c" aria-label="Vermelho" title="Vermelho"></button>
+              <button type="button" data-f1-color="#f0c846" aria-label="Amarelo" title="Amarelo"></button>
+              <button type="button" data-f1-color="#328fba" aria-label="Azul" title="Azul"></button>
+              <button type="button" data-f1-color="#55a66a" aria-label="Verde" title="Verde"></button>
+              <button type="button" data-f1-color="#292d35" aria-label="Preto" title="Preto"></button>
+              <button type="button" data-f1-color="#f3f1e8" aria-label="Branco" title="Branco"></button>
+            </div>
+            <label class="f1-range-row" for="f1-engine"><span>Motor</span><input id="f1-engine" type="range" min="1" max="10" value="6"><output for="f1-engine">6</output></label>
+            <label class="f1-range-row" for="f1-grip"><span>Aderência</span><input id="f1-grip" type="range" min="1" max="10" value="6"><output for="f1-grip">6</output></label>
+            <label class="f1-range-row" for="f1-aero"><span>Aerodinâmica</span><input id="f1-aero" type="range" min="1" max="10" value="6"><output for="f1-aero">6</output></label>
+            <p class="f1-save-note" id="f1-save-note">Configuração salva neste navegador.</p>
+          </section>
+          <section class="f1-race-setup" id="f1-race-setup" aria-label="Configuração do Grand Prix" hidden>
+            <label for="f1-track-select">Pista <select id="f1-track-select"></select></label>
+            <label for="f1-car-select">Carro <select id="f1-car-select"><option value="custom">Meu carro configurado</option><option value="team">Carro de equipe</option></select></label>
+            <label class="f1-team-field" for="f1-team-select" hidden>Equipe <select id="f1-team-select"></select></label>
+            <button class="f1-start-button" id="f1-start-race" type="button">Largar corrida <span aria-hidden="true">→</span></button>
+          </section>
+        </div>
         <canvas class="mini-game-canvas" id="mini-game-canvas" width="800" height="440" aria-label="Área do minigame"></canvas>
         <div class="dialog-controls">
           <div class="direction-controls" aria-label="Controles direcionais">

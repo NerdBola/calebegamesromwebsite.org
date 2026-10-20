@@ -1,125 +1,42 @@
-const API_URL = 'https://www.speedrun.com/api/v1/games?moderator=xyqd75n8&max=100';
-const PROFILE_ID = 'xyqd75n8';
-const grid = document.querySelector('#games-grid');
-const count = document.querySelector('#game-count');
-const searchInput = document.querySelector('#game-search');
-const filterButtons = [...document.querySelectorAll('.filter-button')];
-const status = document.querySelector('#games-status');
-
-let allGames = [];
-let activeFilter = 'all';
-
-function createGameCard(game, index) {
-  const card = document.createElement('a');
-  card.className = 'game-card';
-  card.href = game.weblink;
-  card.target = '_blank';
-  card.rel = 'noreferrer';
-  card.style.animationDelay = `${Math.min(index % 12, 8) * 35}ms`;
-
-  const cover = document.createElement('img');
-  const coverUrl = game.assets?.['cover-medium']?.uri || game.assets?.['cover-small']?.uri;
-  cover.className = 'game-cover';
-  cover.alt = `Capa de ${game.names?.international || 'jogo'}`;
-  cover.loading = 'lazy';
-  cover.src = coverUrl || 'https://www.speedrun.com/images/blankcover.png';
-  cover.addEventListener('error', () => {
-    cover.src = 'https://www.speedrun.com/images/blankcover.png';
-    cover.classList.add('is-empty');
-  }, { once: true });
-
-  const info = document.createElement('span');
-  info.className = 'game-info';
-  const name = document.createElement('span');
-  name.className = 'game-name';
-  name.textContent = game.names?.international?.trim() || 'Jogo sem título';
-  const meta = document.createElement('span');
-  meta.className = 'game-meta';
-  const role = document.createElement('span');
-  const roleName = game.moderators?.[PROFILE_ID] === 'super-moderator' ? 'Supermoderador' : 'Moderador';
-  role.textContent = roleName;
-  const tag = document.createElement('span');
-  tag.className = `game-tag${game.romhack ? ' romhack' : ''}`;
-  tag.textContent = game.romhack ? 'ROM HACK' : (game.released || 'SRC');
-
-  meta.append(role, tag);
-  info.append(name, meta);
-  card.append(cover, info);
-  return card;
-}
-
-function renderGames() {
-  const query = searchInput.value.trim().toLocaleLowerCase('pt-BR');
-  const visibleGames = allGames.filter((game) => {
-    const matchesSearch = (game.names?.international || '').toLocaleLowerCase('pt-BR').includes(query);
-    const matchesFilter = activeFilter === 'all' || game.romhack;
-    return matchesSearch && matchesFilter;
-  });
-
-  grid.replaceChildren();
-  if (visibleGames.length === 0) {
-    const message = document.createElement('p');
-    message.className = 'games-message';
-    message.textContent = allGames.length ? 'Nenhum jogo encontrado com esse nome.' : 'Nenhum jogo para mostrar.';
-    grid.append(message);
-  } else {
-    const fragment = document.createDocumentFragment();
-    visibleGames.forEach((game, index) => fragment.append(createGameCard(game, index)));
-    grid.append(fragment);
-  }
-  count.textContent = `${visibleGames.length} ${visibleGames.length === 1 ? 'jogo' : 'jogos'}${query || activeFilter !== 'all' ? ` de ${allGames.length}` : ''}`;
-  grid.setAttribute('aria-busy', 'false');
-}
-
-async function loadGames() {
-  try {
-    let nextUrl = API_URL;
-    let pageCount = 0;
-    while (nextUrl && pageCount < 20) {
-      const response = await fetch(nextUrl, { headers: { Accept: 'application/json' } });
-      if (!response.ok) throw new Error(`A API respondeu com status ${response.status}.`);
-      const payload = await response.json();
-      allGames.push(...(payload.data || []));
-      nextUrl = payload.pagination?.links?.find((link) => link.rel === 'next')?.uri || null;
-      pageCount += 1;
-    }
-    allGames.sort((a, b) => (a.names?.international || '').localeCompare(b.names?.international || '', 'pt-BR'));
-    renderGames();
-    status.textContent = 'Lista atualizada ao vivo pela API oficial do Speedrun.com.';
-  } catch (error) {
-    grid.replaceChildren();
-    const message = document.createElement('p');
-    message.className = 'games-message error';
-    message.textContent = 'Não foi possível carregar os jogos agora. A API do Speedrun.com pode estar temporariamente indisponível.';
-    grid.append(message);
-    grid.setAttribute('aria-busy', 'false');
-    count.textContent = 'API indisponível';
-    status.textContent = 'Tente novamente mais tarde ou consulte o perfil diretamente no Speedrun.com.';
-    console.error('Falha ao carregar jogos moderados:', error);
-  }
-}
-
-searchInput.addEventListener('input', renderGames);
-filterButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    activeFilter = button.dataset.filter;
-    filterButtons.forEach((item) => {
-      const selected = item === button;
-      item.classList.toggle('is-active', selected);
-      item.setAttribute('aria-pressed', String(selected));
-    });
-    renderGames();
-  });
-});
-
-loadGames();
-
 const miniGameDialog = document.querySelector('#mical-dialog');
 const miniGameCanvas = document.querySelector('#mini-game-canvas');
 const miniGameContext = miniGameCanvas.getContext('2d');
 const miniGameTitle = document.querySelector('#mini-game-title');
 const miniGameInstructions = document.querySelector('#mini-game-instructions');
 const miniGameStatus = document.querySelector('#mini-game-status');
+const f1Setup = document.querySelector('#f1-setup');
+const f1ConfigPanel = document.querySelector('#f1-config-panel');
+const f1RaceSetup = document.querySelector('#f1-race-setup');
+const f1TrackSelect = document.querySelector('#f1-track-select');
+const f1CarSelect = document.querySelector('#f1-car-select');
+const f1TeamSelect = document.querySelector('#f1-team-select');
+const f1TeamField = document.querySelector('.f1-team-field');
+const f1DefaultConfig = { color: '#e84b3c', engine: 6, grip: 6, aero: 6 };
+const f1Tracks = [
+  'Melbourne · Austrália', 'Xangai · China', 'Suzuka · Japão', 'Sakhir · Bahrein',
+  'Jeddah · Arábia Saudita', 'Miami · Estados Unidos', 'Imola · Itália', 'Monte Carlo · Mônaco',
+  'Montreal · Canadá', 'Barcelona · Espanha', 'Spielberg · Áustria', 'Silverstone · Reino Unido',
+  'Spa-Francorchamps · Bélgica', 'Hungaroring · Hungria', 'Zandvoort · Países Baixos', 'Monza · Itália',
+  'Baku · Azerbaijão', 'Marina Bay · Singapura', 'Austin · Estados Unidos', 'Cidade do México · México',
+  'Interlagos · Brasil', 'Las Vegas · Estados Unidos', 'Lusail · Catar', 'Yas Marina · Abu Dhabi',
+  'Portimão · Portugal', 'Nürburgring · Alemanha', 'Istanbul Park · Turquia', 'Sepang · Malásia',
+  'Hockenheim · Alemanha', 'Kyalami · África do Sul', 'Buenos Aires · Argentina', 'Paul Ricard · França'
+];
+const f1Teams = [
+  { name: 'Ferrari', color: '#e84b3c', engine: 8, grip: 7, aero: 8 },
+  { name: 'McLaren', color: '#f28a35', engine: 8, grip: 8, aero: 7 },
+  { name: 'Mercedes', color: '#42b7ac', engine: 8, grip: 8, aero: 8 },
+  { name: 'Red Bull', color: '#4166a6', engine: 9, grip: 8, aero: 7 },
+  { name: 'Aston Martin', color: '#39866f', engine: 7, grip: 8, aero: 8 },
+  { name: 'Alpine', color: '#e785a6', engine: 7, grip: 7, aero: 8 },
+  { name: 'Williams', color: '#4a83c1', engine: 8, grip: 7, aero: 7 },
+  { name: 'Haas', color: '#e8e8e3', engine: 7, grip: 7, aero: 7 },
+  { name: 'Racing Bulls', color: '#556fa9', engine: 7, grip: 8, aero: 7 },
+  { name: 'Audi', color: '#ba3434', engine: 8, grip: 7, aero: 8 },
+  { name: 'Cadillac', color: '#d3bd82', engine: 7, grip: 7, aero: 8 }
+];
+let f1CarConfig = loadF1CarConfig();
+let f1RaceSelection = null;
 const heldGameKeys = new Set();
 const miniGameDetails = {
   race: {
@@ -137,6 +54,14 @@ const miniGameDetails = {
   duel: {
     title: 'Mical vs Paulo',
     instructions: 'Use ↑/↓ ou W/S para mover a raquete. Faça 5 pontos antes do Paulo.'
+  },
+  f1config: {
+    title: 'Formula 1 X · Config Car',
+    instructions: 'Ajuste a cor e o acerto do carro. Suas escolhas ficam salvas neste navegador.'
+  },
+  f1gp: {
+    title: 'Formula 1 X · Grand Prix',
+    instructions: 'Escolha uma das 32 pistas e decida se vai correr com seu carro ou com uma equipe.'
   }
 };
 
@@ -147,6 +72,73 @@ let previousMiniGameFrame = 0;
 
 function setMiniGameStatus(message) {
   miniGameStatus.textContent = message;
+}
+
+function loadF1CarConfig() {
+  try {
+    return { ...f1DefaultConfig, ...JSON.parse(localStorage.getItem('calebegamesrom-f1-car') || '{}') };
+  } catch {
+    return { ...f1DefaultConfig };
+  }
+}
+
+function saveF1CarConfig() {
+  try {
+    localStorage.setItem('calebegamesrom-f1-car', JSON.stringify(f1CarConfig));
+    document.querySelector('#f1-save-note').textContent = 'Configuração salva neste navegador.';
+  } catch {
+    document.querySelector('#f1-save-note').textContent = 'Configuração ativa até você fechar esta página.';
+  }
+  drawMiniGame();
+}
+
+function syncF1ConfigForm() {
+  for (const key of ['engine', 'grip', 'aero']) {
+    const input = document.querySelector(`#f1-${key}`);
+    input.value = f1CarConfig[key];
+    input.nextElementSibling.value = f1CarConfig[key];
+  }
+  document.querySelectorAll('[data-f1-color]').forEach((button) => {
+    button.style.setProperty('--swatch', button.dataset.f1Color);
+    button.setAttribute('aria-pressed', String(button.dataset.f1Color === f1CarConfig.color));
+  });
+}
+
+function populateF1Selections() {
+  f1Tracks.forEach((track, index) => {
+    const option = document.createElement('option');
+    option.value = String(index);
+    option.textContent = `${String(index + 1).padStart(2, '0')} · ${track}`;
+    f1TrackSelect.append(option);
+  });
+  f1Teams.forEach((team) => {
+    const option = document.createElement('option');
+    option.value = team.name;
+    option.textContent = team.name;
+    f1TeamSelect.append(option);
+  });
+}
+
+function startGrandPrix() {
+  const team = f1Teams.find((item) => item.name === f1TeamSelect.value) || f1Teams[0];
+  const usingTeam = f1CarSelect.value === 'team';
+  f1RaceSelection = {
+    trackIndex: Number(f1TrackSelect.value) || 0,
+    color: usingTeam ? team.color : f1CarConfig.color,
+    engine: usingTeam ? team.engine : Number(f1CarConfig.engine),
+    grip: usingTeam ? team.grip : Number(f1CarConfig.grip),
+    aero: usingTeam ? team.aero : Number(f1CarConfig.aero),
+    carName: usingTeam ? team.name : 'Meu carro'
+  };
+  activeMiniGame = 'f1race';
+  f1Setup.hidden = true;
+  document.querySelector('.direction-controls').hidden = false;
+  document.querySelector('.dialog-restart').hidden = false;
+  document.querySelector('.dialog-key-hint').textContent = '↑ ACELERA · ↓ FREIA · ← → DIREÇÃO · ESPAÇO TURBO';
+  miniGameInstructions.textContent = `${f1Tracks[f1RaceSelection.trackIndex]} · ${f1RaceSelection.carName}`;
+  resetMiniGame();
+  previousMiniGameFrame = performance.now();
+  miniGameFrame = requestAnimationFrame(runMiniGameFrame);
 }
 
 function resetMiniGame() {
@@ -181,13 +173,19 @@ function resetMiniGame() {
       direction: null, moveTimer: 0, ghostTimer: 0, done: false
     };
     setMiniGameStatus(`Bolinhas restantes: ${dots.size}`);
-  } else {
+  } else if (activeMiniGame === 'duel') {
     miniGameState = {
       playerY: 220, pauloY: 220, ballX: 400, ballY: 220,
       ballVX: 245, ballVY: 150, playerScore: 0, pauloScore: 0,
       done: false, won: false
     };
     setMiniGameStatus('Primeiro a marcar 5 pontos vence!');
+  } else if (activeMiniGame === 'f1race') {
+    miniGameState = {
+      ...f1RaceSelection, progress: 0, rivalProgress: 0, speed: 0,
+      lateral: 0, lap: 1, done: false, won: false
+    };
+    setMiniGameStatus(`GP ${f1Tracks[miniGameState.trackIndex]} · ${miniGameState.carName}`);
   }
   drawMiniGame();
 }
@@ -197,9 +195,30 @@ function launchMiniGame(name) {
   activeMiniGame = name;
   miniGameTitle.textContent = miniGameDetails[name].title;
   miniGameInstructions.textContent = miniGameDetails[name].instructions;
-  document.querySelector('.direction-controls').hidden = name === 'fishing';
+  const isF1 = name === 'f1config' || name === 'f1gp';
+  f1Setup.hidden = !isF1;
+  f1ConfigPanel.hidden = name !== 'f1config';
+  f1RaceSetup.hidden = name !== 'f1gp';
+  document.querySelector('.direction-controls').hidden = name === 'fishing' || isF1;
+  document.querySelector('.dialog-restart').hidden = isF1;
+  document.querySelector('.dialog-key-hint').textContent = name === 'f1config' || name === 'f1gp' ? '' : 'TECLAS DE SETA · WASD · ESPAÇO';
   if (!miniGameDialog.open) miniGameDialog.showModal();
   cancelAnimationFrame(miniGameFrame);
+  if (name === 'f1config') {
+    activeMiniGame = name;
+    miniGameState = {};
+    syncF1ConfigForm();
+    setMiniGameStatus('Ajuste o carro e ele estará pronto para o Grand Prix.');
+    drawMiniGame();
+    return;
+  }
+  if (name === 'f1gp') {
+    activeMiniGame = name;
+    miniGameState = null;
+    setMiniGameStatus(`${f1Tracks.length} pistas disponíveis · escolha seu carro e largue!`);
+    drawMiniGame();
+    return;
+  }
   resetMiniGame();
   previousMiniGameFrame = performance.now();
   miniGameFrame = requestAnimationFrame(runMiniGameFrame);
@@ -339,19 +358,46 @@ function updateMiniGame(delta) {
         state.ballVY = Math.random() > 0.5 ? 150 : -150;
       }
     }
+  } else if (activeMiniGame === 'f1race') {
+    const accelerating = heldGameKeys.has('ArrowUp') || heldGameKeys.has('w');
+    const braking = heldGameKeys.has('ArrowDown') || heldGameKeys.has('s');
+    const turbo = heldGameKeys.has('space');
+    const steering = Number(heldGameKeys.has('ArrowRight') || heldGameKeys.has('d')) - Number(heldGameKeys.has('ArrowLeft') || heldGameKeys.has('a'));
+    const maxSpeed = 105 + state.engine * 12 + state.aero * 2;
+    state.speed += (accelerating ? 48 + state.engine * 8 : -32) * delta;
+    if (braking) state.speed -= 95 * delta;
+    state.speed = Math.max(0, Math.min(maxSpeed * (turbo ? 1.16 : 1), state.speed));
+    state.lateral = Math.max(-1.35, Math.min(1.35, state.lateral + steering * (0.46 + state.grip * 0.055) * delta));
+    if (!steering) state.lateral *= Math.max(0, 1 - delta * 0.18);
+    if (Math.abs(state.lateral) > 1) state.speed *= Math.max(0.84, 1 - delta * (1.8 - state.grip * 0.08));
+    state.progress += state.speed * (1 + state.aero * 0.003) / 2700 * delta;
+    state.rivalProgress += (0.065 + (state.engine > 8 ? 0.002 : 0)) * delta;
+    const currentLap = Math.min(3, Math.floor(state.progress) + 1);
+    if (currentLap > state.lap) {
+      state.lap = currentLap;
+      setMiniGameStatus(currentLap === 3 ? 'Última volta! Pise fundo!' : `Volta ${currentLap} de 3 · ${Math.round(state.speed)} km/h`);
+    }
+    if (state.progress >= 3 || state.rivalProgress >= 3) {
+      state.done = true;
+      state.won = state.progress >= 3 && state.progress >= state.rivalProgress;
+      setMiniGameStatus(state.won ? 'Bandeirada! Você venceu o Grand Prix!' : 'Paulo cruzou a linha primeiro. Tente outra vez!');
+    }
   }
 }
 
 function drawMiniGame() {
-  if (!miniGameState) return;
+  if (!miniGameState && activeMiniGame !== 'f1gp') return;
   const ctx = miniGameContext;
   const state = miniGameState;
   ctx.clearRect(0, 0, 800, 440);
-  if (activeMiniGame === 'race') drawResortRace(ctx, state);
+  if (activeMiniGame === 'f1config') drawF1CarPreview(ctx);
+  else if (activeMiniGame === 'f1gp') drawF1SetupPreview(ctx);
+  else if (activeMiniGame === 'f1race') drawF1Race(ctx, state);
+  else if (activeMiniGame === 'race') drawResortRace(ctx, state);
   else if (activeMiniGame === 'fishing') drawResortFishing(ctx, state);
   else if (activeMiniGame === 'pac') drawPacMical(ctx, state);
   else if (activeMiniGame === 'duel') drawMicalDuel(ctx, state);
-  if (state.done) {
+  if (state?.done) {
     ctx.fillStyle = '#162521b8';
     ctx.fillRect(0, 0, 800, 440);
     ctx.fillStyle = '#fffdf5';
@@ -361,6 +407,102 @@ function drawMiniGame() {
     ctx.font = '16px "DM Mono", monospace';
     ctx.fillText('Use ↻ Reiniciar para jogar outra vez', 400, 250);
   }
+}
+
+function drawFormulaCar(ctx, x, y, angle, color) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.fillStyle = '#17221e';
+  ctx.fillRect(-16, -12, 10, 6);
+  ctx.fillRect(8, -12, 10, 6);
+  ctx.fillRect(-16, 6, 10, 6);
+  ctx.fillRect(8, 6, 10, 6);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(-24, -4); ctx.lineTo(-15, -5); ctx.lineTo(-10, -11);
+  ctx.lineTo(7, -11); ctx.lineTo(14, -6); ctx.lineTo(23, -5);
+  ctx.lineTo(26, -2); ctx.lineTo(23, 2); ctx.lineTo(14, 3);
+  ctx.lineTo(7, 10); ctx.lineTo(-10, 10); ctx.lineTo(-15, 4); ctx.lineTo(-24, 3);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#d7ece2';
+  ctx.beginPath(); ctx.ellipse(1, -0.5, 7, 5, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fffdf5';
+  ctx.fillRect(22, -1.5, 7, 3);
+  ctx.fillRect(-22, -1.5, 5, 3);
+  ctx.restore();
+}
+
+function drawF1CarPreview(ctx) {
+  ctx.fillStyle = '#dce8d7'; ctx.fillRect(0, 0, 800, 440);
+  ctx.fillStyle = '#4b5750'; ctx.fillRect(0, 290, 800, 150);
+  ctx.fillStyle = '#f1d47e'; ctx.fillRect(0, 286, 800, 6);
+  ctx.fillStyle = '#fffdf5'; ctx.font = '11px "DM Mono", monospace'; ctx.textAlign = 'left';
+  ctx.fillText('BOX 01', 38, 47);
+  ctx.fillStyle = '#34473d'; ctx.font = '700 24px "Space Grotesk", sans-serif';
+  ctx.fillText('SEU CARRO', 38, 82);
+  drawFormulaCar(ctx, 404, 211, -0.08, f1CarConfig.color);
+  const stats = [
+    ['MOTOR', f1CarConfig.engine], ['ADERÊNCIA', f1CarConfig.grip], ['AERO', f1CarConfig.aero]
+  ];
+  stats.forEach(([label, value], index) => {
+    const x = 38 + index * 245;
+    ctx.fillStyle = '#34473d'; ctx.font = '10px "DM Mono", monospace'; ctx.textAlign = 'left';
+    ctx.fillText(label, x, 376);
+    ctx.fillStyle = '#b6c5b6'; ctx.fillRect(x, 388, 205, 12);
+    ctx.fillStyle = f1CarConfig.color; ctx.fillRect(x, 388, 205 * Number(value) / 10, 12);
+    ctx.fillStyle = '#34473d'; ctx.fillText(`${value}/10`, x + 214, 398);
+  });
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(635, 300, 12, 140);
+  ctx.fillStyle = '#1d2926'; ctx.fillRect(647, 300, 12, 140);
+  for (let y = 300; y < 440; y += 24) {
+    ctx.fillStyle = ((y - 300) / 24) % 2 ? '#1d2926' : '#fffdf5';
+    ctx.fillRect(635, y, 12, 12);
+  }
+}
+
+function drawF1SetupPreview(ctx) {
+  ctx.fillStyle = '#82ad76'; ctx.fillRect(0, 0, 800, 440);
+  ctx.lineWidth = 112; ctx.strokeStyle = '#fffdf5'; ctx.beginPath(); ctx.ellipse(400, 238, 258, 153, -0.08, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 102; ctx.strokeStyle = '#4b5750'; ctx.beginPath(); ctx.ellipse(400, 238, 258, 153, -0.08, 0, Math.PI * 2); ctx.stroke();
+  ctx.setLineDash([12, 16]); ctx.lineWidth = 2; ctx.strokeStyle = '#ffffff80';
+  ctx.beginPath(); ctx.ellipse(400, 238, 258, 153, -0.08, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
+  drawFormulaCar(ctx, 400, 85, 0, f1CarConfig.color);
+  ctx.fillStyle = '#fffdf5'; ctx.font = '700 26px "Space Grotesk", sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('32 PISTAS · UM GRID · LARGADA!', 400, 232);
+  ctx.font = '12px "DM Mono", monospace'; ctx.fillText('ESCOLHA SEU CIRCUITO E VÁ PARA A PISTA', 400, 258);
+}
+
+function drawF1Race(ctx, state) {
+  ctx.fillStyle = '#82ad76'; ctx.fillRect(0, 0, 800, 440);
+  ctx.fillStyle = '#739e69';
+  for (let x = 24; x < 800; x += 66) {
+    ctx.beginPath(); ctx.arc(x, 24 + (x % 3) * 8, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x + 29, 410 - (x % 2) * 10, 3, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.lineWidth = 120; ctx.strokeStyle = '#fffdf5'; ctx.beginPath(); ctx.ellipse(400, 238, 258, 153, -0.08, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 108; ctx.strokeStyle = '#4b5750'; ctx.beginPath(); ctx.ellipse(400, 238, 258, 153, -0.08, 0, Math.PI * 2); ctx.stroke();
+  ctx.setLineDash([12, 16]); ctx.lineWidth = 2; ctx.strokeStyle = '#ffffff85';
+  ctx.beginPath(); ctx.ellipse(400, 238, 258, 153, -0.08, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
+  for (let index = 0; index < 8; index += 1) {
+    ctx.fillStyle = index % 2 ? '#1d2926' : '#fffdf5';
+    ctx.fillRect(390 + index * 3, 80 + index * 12, 12, 12);
+    ctx.fillStyle = index % 2 ? '#fffdf5' : '#1d2926';
+    ctx.fillRect(402 + index * 3, 80 + index * 12, 12, 12);
+  }
+  const playerAngle = (state.progress % 1) * Math.PI * 2 - Math.PI / 2;
+  const rivalAngle = (state.rivalProgress % 1) * Math.PI * 2 - Math.PI / 2;
+  const playerRadius = 153 + state.lateral * 24;
+  drawFormulaCar(ctx, 400 + Math.cos(playerAngle) * (258 + state.lateral * 18), 238 + Math.sin(playerAngle) * playerRadius, playerAngle + Math.PI / 2, state.color);
+  drawFormulaCar(ctx, 400 + Math.cos(rivalAngle) * 258, 238 + Math.sin(rivalAngle) * 153, rivalAngle + Math.PI / 2, '#f3f1e8');
+  ctx.fillStyle = '#1d2926'; ctx.fillRect(20, 17, 206, 49);
+  ctx.fillStyle = '#fffdf5'; ctx.textAlign = 'left'; ctx.font = '11px "DM Mono", monospace';
+  ctx.fillText(f1Tracks[state.trackIndex].toUpperCase(), 32, 36);
+  ctx.font = '700 17px "Space Grotesk", sans-serif';
+  ctx.fillText(`VOLTA ${state.lap}/3   ${Math.round(state.speed)} KM/H`, 32, 57);
+  ctx.fillStyle = '#1d2926'; ctx.fillRect(672, 17, 108, 49);
+  ctx.fillStyle = '#fffdf5'; ctx.textAlign = 'center'; ctx.font = '10px "DM Mono", monospace';
+  ctx.fillText('P1  MICAL', 726, 37); ctx.fillText('P2  RIVAL', 726, 54);
 }
 
 function drawBeachBackground(ctx) {
@@ -520,6 +662,28 @@ function catchFish() {
   }
   drawMiniGame();
 }
+
+populateF1Selections();
+syncF1ConfigForm();
+document.querySelectorAll('[data-f1-color]').forEach((button) => {
+  button.addEventListener('click', () => {
+    f1CarConfig.color = button.dataset.f1Color;
+    syncF1ConfigForm();
+    saveF1CarConfig();
+  });
+});
+for (const key of ['engine', 'grip', 'aero']) {
+  const input = document.querySelector(`#f1-${key}`);
+  input.addEventListener('input', () => {
+    f1CarConfig[key] = Number(input.value);
+    input.nextElementSibling.value = input.value;
+    saveF1CarConfig();
+  });
+}
+f1CarSelect.addEventListener('change', () => {
+  f1TeamField.hidden = f1CarSelect.value !== 'team';
+});
+document.querySelector('#f1-start-race').addEventListener('click', startGrandPrix);
 
 document.querySelectorAll('[data-launch-game]').forEach((button) => {
   button.addEventListener('click', () => launchMiniGame(button.dataset.launchGame));
